@@ -37,7 +37,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
     <>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-in fade-in duration-300" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="glass rounded-3xl p-8 shadow-2xl max-w-lg w-full animate-in zoom-in-95 duration-300 border border-white/30">
+        <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-w-lg w-full animate-in zoom-in-95 duration-300 border border-white/30">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-theme-muted hover:text-theme-card transition-colors"
@@ -47,7 +47,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
             </svg>
           </button>
 
-          <h2 className="text-2xl font-bold text-theme-card mb-6">{goal.name} Settings</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-theme-card mb-6">{goal.name} Settings</h2>
 
           {/* Start Date */}
           <div className="mb-6">

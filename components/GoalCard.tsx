@@ -46,23 +46,23 @@ export default function GoalCard({ goal, refreshTrigger }: GoalCardProps) {
 
   return (
     <div className="bg-white/30 backdrop-blur-sm rounded-2xl border border-white/30">
-      <div className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 flex-1">
+      <div className="p-4 sm:p-6">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setExpanded(!expanded);
               }}
-              className="text-theme-card hover:opacity-80"
+              className="text-theme-card hover:opacity-80 shrink-0"
             >
               {expanded ? '▼' : '▶'}
             </button>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold text-theme-card mb-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg sm:text-xl font-semibold text-theme-card mb-2">
                 {goal.name}
               </h3>
-              <div className="flex items-center gap-4 text-theme-muted text-sm">
+              <div className="flex items-center gap-2 sm:gap-4 text-theme-muted text-xs sm:text-sm flex-wrap">
                 <p>{formatTime(goal.totalStudyTime)} studied</p>
                 {goal.startDate && (
                   <span className="text-blue-600">
@@ -82,14 +82,14 @@ export default function GoalCard({ goal, refreshTrigger }: GoalCardProps) {
               e.stopPropagation();
               router.push(`/goals/${goal.id}`);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full transition-all text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-full transition-all text-xs sm:text-sm shrink-0"
           >
             Open
           </button>
         </div>
 
         {expanded && (
-          <div className="mt-4 pl-10">
+          <div className="mt-4 pl-6 sm:pl-10">
             {loading ? (
               <div className="text-center py-4 text-theme-muted">Loading...</div>
             ) : goalDetails ? (

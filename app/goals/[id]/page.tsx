@@ -158,14 +158,14 @@ export default function GoalDetailPage() {
   return (
     <div className="min-h-screen bg-theme-gradient p-4">
       <main className="max-w-4xl mx-auto py-8">
-        <div className="mb-6 flex items-start justify-between">
+        <div className="mb-6 flex items-start justify-between flex-col sm:flex-row gap-4">
           <button
             onClick={() => router.push('/')}
-            className="text-white/90 hover:text-white flex items-center gap-2"
+            className="text-white/90 hover:text-white flex items-center gap-2 text-sm sm:text-base"
           >
             ← Back to Goals
           </button>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
             <DateTimeDisplay />
             <ThemeToggle />
           </div>
@@ -173,20 +173,20 @@ export default function GoalDetailPage() {
 
         <GoalProgress goal={goal} subjects={goal.subjects} refreshTrigger={refreshTrigger} />
 
-        <div className="glass rounded-3xl p-8 shadow-2xl mb-8 mt-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-theme-card">Subjects</h2>
-            <div className="flex gap-2">
+        <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl mb-8 mt-8">
+          <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-theme-card">Subjects</h2>
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setGoalSettingsOpen(true)}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full transition-all text-sm"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-full transition-all text-xs sm:text-sm"
                 title="Goal Settings"
               >
-                ⚙️ Goal Settings
+                ⚙️ <span className="hidden sm:inline">Goal</span> Settings
               </button>
               <button
                 onClick={() => setShowAddSubject(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-all"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-full transition-all text-xs sm:text-base"
               >
                 + Add Subject
               </button>
@@ -194,11 +194,11 @@ export default function GoalDetailPage() {
           </div>
 
           {showAddSubject && (
-            <div className="mb-6 p-6 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
-              <h3 className="text-xl font-semibold text-theme-card mb-4">
+            <div className="mb-6 p-4 sm:p-6 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
+              <h3 className="text-lg sm:text-xl font-semibold text-theme-card mb-4">
                 Add New Subject
               </h3>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <input
                   type="text"
                   value={newSubjectName}
@@ -214,22 +214,24 @@ export default function GoalDetailPage() {
                     }
                   }}
                 />
-                <button
-                  onClick={handleAddSubject}
-                  disabled={submitting}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
-                >
-                  {submitting ? 'Adding...' : 'Add'}
-                </button>
-                <button
-                  onClick={() => {
-                    setShowAddSubject(false);
-                    setNewSubjectName('');
-                  }}
-                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
-                >
-                  Cancel
-                </button>
+                <div className="flex gap-3 sm:gap-4">
+                  <button
+                    onClick={handleAddSubject}
+                    disabled={submitting}
+                    className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
+                  >
+                    {submitting ? 'Adding...' : 'Add'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAddSubject(false);
+                      setNewSubjectName('');
+                    }}
+                    className="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -248,21 +250,21 @@ export default function GoalDetailPage() {
                   key={subject.id}
                   className="bg-white/30 backdrop-blur-sm rounded-2xl border border-white/30"
                 >
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 flex-1">
+                  <div className="p-4 sm:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                         <button
                           onClick={() => toggleSubject(subject.id)}
-                          className="text-theme-card hover:opacity-80"
+                          className="text-theme-card hover:opacity-80 shrink-0"
                         >
                           {expandedSubjects.has(subject.id) ? '▼' : '▶'}
                         </button>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-theme-card">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg sm:text-xl font-semibold text-theme-card">
                             {subject.name}
                           </h3>
-                          <div className="flex items-center gap-4 text-theme-muted text-sm">
-                            <p>{subject.studyTime} minutes studied</p>
+                          <div className="flex items-center gap-2 sm:gap-4 text-theme-muted text-xs sm:text-sm flex-wrap">
+                            <p>{subject.studyTime} min</p>
                             {subject.dailyMinutesGoal && (
                               <span className="text-blue-600">
                                 Daily: {subject.dailyMinutesGoal} min
@@ -270,19 +272,19 @@ export default function GoalDetailPage() {
                             )}
                             {subject.daysOfWeek && subject.daysOfWeek.length > 0 && (
                               <span className="text-purple-600">
-                                {subject.daysOfWeek.length} days/week
+                                {subject.daysOfWeek.length} days/wk
                               </span>
                             )}
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 shrink-0">
                         <button
                           onClick={() => {
                             setCurrentSubjectForSettings(subject);
                             setSettingsModalOpen(true);
                           }}
-                          className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full transition-all text-sm"
+                          className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-2 sm:px-4 rounded-full transition-all text-xs sm:text-sm"
                           title="Settings"
                         >
                           ⚙️
@@ -299,15 +301,15 @@ export default function GoalDetailPage() {
                             setAddingTopicTo(addingTopicTo === subject.id ? null : subject.id);
                             setNewTopicName('');
                           }}
-                          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-full transition-all text-sm"
+                          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-2 sm:px-4 rounded-full transition-all text-xs sm:text-sm"
                         >
-                          + Add Topic
+                          + Topic
                         </button>
                       </div>
                     </div>
 
                     {expandedSubjects.has(subject.id) && (
-                      <div className="mt-4 pl-10 space-y-3">
+                      <div className="mt-4 pl-6 sm:pl-10 space-y-3">
                         {/* Subject Progress */}
                         <SubjectProgress
                           subject={subject}
@@ -337,8 +339,8 @@ export default function GoalDetailPage() {
                           </button>
                         </div>
                         {addingTopicTo === subject.id && (
-                          <div className="p-4 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30">
-                            <div className="flex gap-3">
+                          <div className="p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30">
+                            <div className="flex gap-2 sm:gap-3 flex-col sm:flex-row">
                               <input
                                 type="text"
                                 value={newTopicName}
@@ -354,22 +356,24 @@ export default function GoalDetailPage() {
                                   }
                                 }}
                               />
-                              <button
-                                onClick={() => handleAddTopic(subject.id)}
-                                disabled={submitting}
-                                className="bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded-xl transition-all text-sm"
-                              >
-                                Add
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setAddingTopicTo(null);
-                                  setNewTopicName('');
-                                }}
-                                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-2 px-4 rounded-xl transition-all text-sm"
-                              >
-                                Cancel
-                              </button>
+                              <div className="flex gap-2 sm:gap-3">
+                                <button
+                                  onClick={() => handleAddTopic(subject.id)}
+                                  disabled={submitting}
+                                  className="flex-1 sm:flex-none bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded-xl transition-all text-sm"
+                                >
+                                  Add
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setAddingTopicTo(null);
+                                    setNewTopicName('');
+                                  }}
+                                  className="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-2 px-4 rounded-xl transition-all text-sm"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
                             </div>
                           </div>
                         )}

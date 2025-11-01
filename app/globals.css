@@ -312,3 +312,22 @@ body {
 .zoom-in-95 {
   animation: zoom-in-95 0.3s ease-out;
 }
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  /* Better touch targets on mobile */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent zoom on input focus on iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  /* Improve scrolling on mobile */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}

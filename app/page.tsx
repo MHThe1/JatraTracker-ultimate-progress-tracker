@@ -67,16 +67,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-theme-gradient p-4">
       <main className="max-w-4xl mx-auto py-8">
-        <div className="flex items-start justify-between mb-12">
-          <div className="text-center flex-1">
-            <h1 className="text-5xl font-bold text-white mb-2 tracking-tight">
+        <div className="flex items-start justify-between mb-12 flex-col sm:flex-row gap-4">
+          <div className="text-center flex-1 w-full sm:w-auto">
+            <h1 className="text-3xl sm:text-5xl font-bold text-white mb-2 tracking-tight">
               JatraTrack
             </h1>
-            <p className="text-white/90 text-lg">
+            <p className="text-white/90 text-base sm:text-lg">
               Track your journey, build your routine
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
             <DateTimeDisplay />
             <ThemeToggle />
           </div>
@@ -104,11 +104,11 @@ export default function Home() {
         ) : null}
 
         {showAddGoal && (
-          <div className="glass rounded-3xl p-8 mb-8 shadow-2xl">
-            <h2 className="text-2xl font-semibold text-theme-card mb-6">
+          <div className="glass rounded-3xl p-4 sm:p-8 mb-8 shadow-2xl">
+            <h2 className="text-xl sm:text-2xl font-semibold text-theme-card mb-4 sm:mb-6">
               Create New Goal
             </h2>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <input
                 type="text"
                 value={newGoalName}
@@ -124,22 +124,24 @@ export default function Home() {
                   }
                 }}
               />
-              <button
-                onClick={handleAddGoal}
-                disabled={submitting}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
-              >
-                {submitting ? 'Adding...' : 'Add'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowAddGoal(false);
-                  setNewGoalName('');
-                }}
-                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
-              >
-                Cancel
-              </button>
+              <div className="flex gap-3 sm:gap-4">
+                <button
+                  onClick={handleAddGoal}
+                  disabled={submitting}
+                  className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
+                >
+                  {submitting ? 'Adding...' : 'Add'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowAddGoal(false);
+                    setNewGoalName('');
+                  }}
+                  className="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -148,12 +150,12 @@ export default function Home() {
           <>
             <TotalProgress goals={goals} />
 
-            <div className="glass rounded-3xl p-8 shadow-2xl">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-theme-card">Your Goals</h2>
+            <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl">
+              <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
+                <h2 className="text-2xl sm:text-3xl font-bold text-theme-card">Your Goals</h2>
                 <button
                   onClick={() => setShowAddGoal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-all"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 sm:px-6 rounded-full transition-all text-sm sm:text-base"
                 >
                   + Add Goal
                 </button>

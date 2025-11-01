@@ -165,7 +165,7 @@ export default function TimerModal({
       
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="glass rounded-3xl p-8 shadow-2xl max-w-md w-full animate-in zoom-in-95 duration-300 border border-white/30">
+        <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-w-md w-full animate-in zoom-in-95 duration-300 border border-white/30">
           {/* Close button */}
           <button
             onClick={onClose}
@@ -178,15 +178,15 @@ export default function TimerModal({
 
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-theme-card mb-2">{subjectName}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-theme-card mb-2">{subjectName}</h2>
             {topicName && (
-              <p className="text-lg text-theme-muted">{topicName}</p>
+              <p className="text-base sm:text-lg text-theme-muted">{topicName}</p>
             )}
           </div>
 
           {/* Timer Display */}
           <div className="text-center mb-8">
-            <div className="text-7xl font-bold text-theme-card mb-4 font-mono animate-pulse">
+            <div className="text-5xl sm:text-7xl font-bold text-theme-card mb-4 font-mono animate-pulse">
               {formatTime(elapsedSeconds)}
             </div>
             
