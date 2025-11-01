@@ -6,6 +6,7 @@ import type { Goal, Subject } from '@/types';
 import TotalProgress from '@/components/TotalProgress';
 import GoalCard from '@/components/GoalCard';
 import DateTimeDisplay from '@/components/DateTimeDisplay';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   const router = useRouter();
@@ -64,7 +65,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-4">
+    <div className="min-h-screen bg-theme-gradient p-4">
       <main className="max-w-4xl mx-auto py-8">
         <div className="flex items-start justify-between mb-12">
           <div className="text-center flex-1">
@@ -75,19 +76,22 @@ export default function Home() {
               Track your journey, build your routine
             </p>
           </div>
-          <DateTimeDisplay />
+          <div className="flex items-center gap-4">
+            <DateTimeDisplay />
+            <ThemeToggle />
+          </div>
         </div>
 
         {loading ? (
           <div className="glass rounded-3xl p-12 text-center mb-8 shadow-2xl">
-            <p className="text-gray-600">Loading goals...</p>
+            <p className="text-theme-card">Loading goals...</p>
           </div>
         ) : goals.length === 0 ? (
           <div className="glass rounded-3xl p-12 text-center mb-8 shadow-2xl">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-theme-card mb-4">
               No goals yet
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-theme-muted mb-6">
               Create your first preparation goal to get started
             </p>
             <button
@@ -101,7 +105,7 @@ export default function Home() {
 
         {showAddGoal && (
           <div className="glass rounded-3xl p-8 mb-8 shadow-2xl">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+            <h2 className="text-2xl font-semibold text-theme-card mb-6">
               Create New Goal
             </h2>
             <div className="flex gap-4">
@@ -110,7 +114,7 @@ export default function Home() {
                 value={newGoalName}
                 onChange={(e) => setNewGoalName(e.target.value)}
                 placeholder="e.g., Preparation for GRE"
-                className="flex-1 px-4 py-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-500"
+                className="flex-1 px-4 py-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card placeholder-theme-muted input-theme"
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleAddGoal();
@@ -132,7 +136,7 @@ export default function Home() {
                   setShowAddGoal(false);
                   setNewGoalName('');
                 }}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-full transition-all"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
               >
                 Cancel
               </button>
@@ -146,7 +150,7 @@ export default function Home() {
 
             <div className="glass rounded-3xl p-8 shadow-2xl">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-gray-800">Your Goals</h2>
+                <h2 className="text-3xl font-bold text-theme-card">Your Goals</h2>
                 <button
                   onClick={() => setShowAddGoal(true)}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-all"

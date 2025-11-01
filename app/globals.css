@@ -1,10 +1,139 @@
 @import "tailwindcss";
 
+/* Base theme variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #3b82f6;
+  --secondary: #8b5cf6;
+  --accent: #ec4899;
+  --card: rgba(255, 255, 255, 0.25);
+  --card-foreground: #1f2937;
+  --border: rgba(255, 255, 255, 0.18);
+  --muted: rgba(0, 0, 0, 0.05);
+  --muted-foreground: #6b7280;
 }
 
+/* Light theme */
+.theme-light {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-primary: #3b82f6;
+  --color-secondary: #8b5cf6;
+  --color-accent: #ec4899;
+  --color-card: rgba(255, 255, 255, 0.25);
+  --color-card-foreground: #1f2937;
+  --color-border: rgba(255, 255, 255, 0.18);
+  --color-muted: rgba(0, 0, 0, 0.05);
+  --color-muted-foreground: #6b7280;
+  --gradient-start: #60a5fa;
+  --gradient-middle: #a78bfa;
+  --gradient-end: #f472b6;
+}
+
+/* Dark theme */
+.theme-dark {
+  --color-background: #0f0f0f;
+  --color-foreground: #e5e5e5;
+  --color-primary: #60a5fa;
+  --color-secondary: #a78bfa;
+  --color-accent: #f472b6;
+  --color-card: rgba(20, 20, 20, 0.85);
+  --color-card-foreground: #e5e5e5;
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-muted: rgba(255, 255, 255, 0.08);
+  --color-muted-foreground: #a3a3a3;
+  --gradient-start: #0f172a;
+  --gradient-middle: #1e1b4b;
+  --gradient-end: #2d1b3d;
+}
+
+/* Matte theme - muted, desaturated, soft */
+.theme-matte {
+  --color-background: #f5f5f0;
+  --color-foreground: #2a2a25;
+  --color-primary: #8b7d6b;
+  --color-secondary: #a69b8f;
+  --color-accent: #7d6f5f;
+  --color-card: rgba(245, 245, 240, 0.7);
+  --color-card-foreground: #2a2a25;
+  --color-border: rgba(139, 125, 107, 0.3);
+  --color-muted: rgba(139, 125, 107, 0.1);
+  --color-muted-foreground: #6b6359;
+  --gradient-start: #d4c5b8;
+  --gradient-middle: #c4b5a8;
+  --gradient-end: #b4a598;
+}
+
+/* Cave theme - very dark, cozy, warm tones */
+.theme-cave {
+  --color-background: #1a1612;
+  --color-foreground: #e8dcc6;
+  --color-primary: #d4a574;
+  --color-secondary: #b8956a;
+  --color-accent: #c98a5f;
+  --color-card: rgba(26, 22, 18, 0.9);
+  --color-card-foreground: #e8dcc6;
+  --color-border: rgba(212, 165, 116, 0.25);
+  --color-muted: rgba(212, 165, 116, 0.1);
+  --color-muted-foreground: #b8956a;
+  --gradient-start: #3d3528;
+  --gradient-middle: #2d2518;
+  --gradient-end: #1d1510;
+}
+
+/* Dhaka theme - vibrant, colorful (inspired by rickshaws and markets) */
+.theme-dhaka {
+  --color-background: #1e293b;
+  --color-foreground: #fef3c7;
+  --color-primary: #fbbf24;
+  --color-secondary: #34d399;
+  --color-accent: #f87171;
+  --color-card: rgba(30, 41, 59, 0.9);
+  --color-card-foreground: #fef3c7;
+  --color-border: rgba(251, 191, 36, 0.4);
+  --color-muted: rgba(52, 211, 153, 0.2);
+  --color-muted-foreground: #fcd34d;
+  --gradient-start: #1e293b;
+  --gradient-middle: #334155;
+  --gradient-end: #475569;
+}
+
+/* NYC theme - corporate, professional */
+.theme-nyc {
+  --color-background: #f8f9fa;
+  --color-foreground: #1e293b;
+  --color-primary: #0ea5e9;
+  --color-secondary: #64748b;
+  --color-accent: #3b82f6;
+  --color-card: rgba(248, 249, 250, 0.8);
+  --color-card-foreground: #1e293b;
+  --color-border: rgba(100, 116, 139, 0.2);
+  --color-muted: rgba(100, 116, 139, 0.1);
+  --color-muted-foreground: #64748b;
+  --gradient-start: #cbd5e1;
+  --gradient-middle: #94a3b8;
+  --gradient-end: #64748b;
+}
+
+/* Custom theme - colors are set via JavaScript */
+.theme-custom {
+  --color-background: var(--custom-background, #ffffff);
+  --color-foreground: var(--custom-foreground, #171717);
+  --color-primary: var(--custom-primary, #3b82f6);
+  --color-secondary: var(--custom-secondary, #8b5cf6);
+  --color-accent: var(--custom-accent, #ec4899);
+  --color-card: var(--custom-card, rgba(255, 255, 255, 0.25));
+  --color-card-foreground: var(--custom-cardForeground, #1f2937);
+  --color-border: var(--custom-border, rgba(255, 255, 255, 0.18));
+  --color-muted: var(--custom-muted, rgba(0, 0, 0, 0.05));
+  --color-muted-foreground: var(--custom-mutedForeground, #6b7280);
+  --gradient-start: var(--custom-primary, #3b82f6);
+  --gradient-middle: var(--custom-secondary, #8b5cf6);
+  --gradient-end: var(--custom-accent, #ec4899);
+}
+
+/* Fallback for browsers that don't support data attributes */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,32 +141,143 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-background);
+  color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* iOS-style glassmorphism */
+/* Theme-aware gradient background */
+.bg-theme-gradient {
+  background: linear-gradient(
+    to bottom right,
+    var(--gradient-start, #60a5fa),
+    var(--gradient-middle, #a78bfa),
+    var(--gradient-end, #f472b6)
+  );
+  transition: background 0.3s ease;
+}
+
+/* iOS-style glassmorphism - adapts to theme */
 .glass {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--color-card, rgba(255, 255, 255, 0.25));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.18));
+  color: var(--color-card-foreground, var(--color-foreground));
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme-aware text colors */
+.text-theme-foreground {
+  color: var(--color-foreground);
+}
+
+.text-theme-muted {
+  color: var(--color-muted-foreground);
+}
+
+.text-theme-card {
+  color: var(--color-card-foreground);
+}
+
+/* Theme-aware backgrounds */
+.bg-theme-card {
+  background: var(--color-card);
+}
+
+.bg-theme-muted {
+  background: var(--color-muted);
+}
+
+/* Theme-aware inputs */
+.input-theme {
+  background: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-card-foreground);
+}
+
+.input-theme::placeholder {
+  color: var(--color-muted-foreground);
+  opacity: 0.7;
+}
+
+/* Theme-aware buttons - secondary/gray */
+.btn-secondary-theme {
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary-theme:hover {
+  background: var(--color-muted);
+  opacity: 0.8;
+}
+
+/* Ensure text stays visible on gradient - adjust based on theme */
+.bg-theme-gradient {
+  background: linear-gradient(
+    to bottom right,
+    var(--gradient-start, #60a5fa),
+    var(--gradient-middle, #a78bfa),
+    var(--gradient-end, #f472b6)
+  );
+  transition: background 0.3s ease;
+}
+
+/* White text for dark gradient backgrounds (dark, cave, dhaka) */
+.theme-dark .bg-theme-gradient h1,
+.theme-dark .bg-theme-gradient h2,
+.theme-dark .bg-theme-gradient h3,
+.theme-dark .bg-theme-gradient p,
+.theme-dark .bg-theme-gradient span:not(.text-theme-card):not(.text-theme-muted),
+.theme-dark .bg-theme-gradient button,
+.theme-cave .bg-theme-gradient h1,
+.theme-cave .bg-theme-gradient h2,
+.theme-cave .bg-theme-gradient h3,
+.theme-cave .bg-theme-gradient p,
+.theme-cave .bg-theme-gradient span:not(.text-theme-card):not(.text-theme-muted),
+.theme-cave .bg-theme-gradient button,
+.theme-dhaka .bg-theme-gradient h1,
+.theme-dhaka .bg-theme-gradient h2,
+.theme-dhaka .bg-theme-gradient h3,
+.theme-dhaka .bg-theme-gradient p,
+.theme-dhaka .bg-theme-gradient span:not(.text-theme-card):not(.text-theme-muted),
+.theme-dhaka .bg-theme-gradient button {
+  color: white;
+}
+
+/* Fix for cards inside glass that need better background in dark themes */
+.theme-dark .bg-white\/30,
+.theme-dark .bg-white\/20,
+.theme-cave .bg-white\/30,
+.theme-cave .bg-white\/20,
+.theme-dhaka .bg-white\/30,
+.theme-dhaka .bg-white\/20 {
+  background: rgba(30, 30, 30, 0.6) !important;
+}
+
+.theme-dark input.bg-white\/20,
+.theme-cave input.bg-white\/20,
+.theme-dhaka input.bg-white\/20 {
+  background: rgba(30, 30, 30, 0.7) !important;
+  color: var(--color-card-foreground) !important;
+}
+
+.theme-dark input.bg-white\/20::placeholder,
+.theme-cave input.bg-white\/20::placeholder,
+.theme-dhaka input.bg-white\/20::placeholder {
+  color: var(--color-muted-foreground) !important;
+  opacity: 0.6;
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(20, 20, 20, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e5e5e5;
 }
 
 /* Animations for modals */

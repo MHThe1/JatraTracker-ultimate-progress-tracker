@@ -40,38 +40,38 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
         <div className="glass rounded-3xl p-8 shadow-2xl max-w-lg w-full animate-in zoom-in-95 duration-300 border border-white/30">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors"
+            className="absolute top-4 right-4 text-theme-muted hover:text-theme-card transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">{goal.name} Settings</h2>
+          <h2 className="text-2xl font-bold text-theme-card mb-6">{goal.name} Settings</h2>
 
           {/* Start Date */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-theme-card mb-2">
               Start Date
             </label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme"
             />
           </div>
 
           {/* Finish Date */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-theme-card mb-2">
               Finish Date
             </label>
             <input
               type="date"
               value={finishDate}
               onChange={(e) => setFinishDate(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme"
             />
           </div>
 
@@ -86,7 +86,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
             </button>
             <button
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-full transition-all"
+              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
             >
               Cancel
             </button>

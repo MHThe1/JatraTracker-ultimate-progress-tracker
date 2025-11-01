@@ -123,8 +123,8 @@ export default function StudyTimer({
   return (
     <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">Study Timer</h3>
-        <div className="text-3xl font-bold text-gray-800 font-mono">
+        <h3 className="text-lg font-semibold text-theme-card">Study Timer</h3>
+        <div className="text-3xl font-bold text-theme-card font-mono">
           {formatTime(elapsedSeconds)}
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function StudyTimer({
         )}
       </div>
       {isRunning && (
-        <p className="text-xs text-gray-600 mt-2 text-center">Session in progress...</p>
+        <p className="text-xs text-theme-muted mt-2 text-center">Session in progress...</p>
       )}
     </div>
   );

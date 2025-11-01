@@ -254,7 +254,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-4">
-      <h4 className="text-lg font-semibold text-gray-800 mb-4">{subject.name} Progress</h4>
+      <h4 className="text-lg font-semibold text-theme-card mb-4">{subject.name} Progress</h4>
 
       {/* View Mode Toggles */}
       <div className="mb-4 flex gap-2 justify-center flex-wrap">
@@ -263,7 +263,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
           className={`px-4 py-1.5 rounded-full font-semibold text-sm transition-all ${
             viewMode === 'day'
               ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Day
@@ -273,7 +273,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
           className={`px-4 py-1.5 rounded-full font-semibold text-sm transition-all ${
             viewMode === 'week'
               ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Week
@@ -283,7 +283,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
           className={`px-4 py-1.5 rounded-full font-semibold text-sm transition-all ${
             viewMode === 'month'
               ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Month
@@ -293,7 +293,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
           className={`px-4 py-1.5 rounded-full font-semibold text-sm transition-all ${
             viewMode === 'total'
               ? 'bg-purple-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Total
@@ -303,18 +303,18 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-white/30">
-          <div className="text-xs font-semibold text-gray-600 uppercase mb-1">Studied</div>
-          <div className="text-xl font-bold text-gray-800">{formatTime(viewData.studied)}</div>
+          <div className="text-xs font-semibold text-theme-muted uppercase mb-1">Studied</div>
+          <div className="text-xl font-bold text-theme-card">{formatTime(viewData.studied)}</div>
         </div>
         <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-white/30">
-          <div className="text-xs font-semibold text-gray-600 uppercase mb-1">Goal</div>
-          <div className="text-xl font-bold text-gray-800">
+          <div className="text-xs font-semibold text-theme-muted uppercase mb-1">Goal</div>
+          <div className="text-xl font-bold text-theme-card">
             {viewData.goal > 0 ? formatTime(viewData.goal) : '—'}
           </div>
         </div>
         <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 border border-white/30">
-          <div className="text-xs font-semibold text-gray-600 uppercase mb-1">Progress</div>
-          <div className="text-xl font-bold text-gray-800">{progressPercentage.toFixed(0)}%</div>
+          <div className="text-xs font-semibold text-theme-muted uppercase mb-1">Progress</div>
+          <div className="text-xl font-bold text-theme-card">{progressPercentage.toFixed(0)}%</div>
         </div>
       </div>
 
@@ -322,12 +322,12 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
       {viewData.goal > 0 ? (
         <div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-semibold text-gray-700">{viewData.label} Progress</span>
-            <span className="text-xs text-gray-600">
+            <span className="text-xs font-semibold text-theme-card">{viewData.label} Progress</span>
+            <span className="text-xs text-theme-muted">
               {formatTime(viewData.studied)} / {formatTime(viewData.goal)}
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+          <div className="w-full bg-white/20 rounded-full h-4 overflow-hidden shadow-inner">
             <div
               className="h-full bg-gradient-to-r from-purple-500 to-pink-600 transition-all duration-500 rounded-full flex items-center justify-end pr-2"
               style={{ width: `${Math.min(progressPercentage, 100)}%` }}
@@ -342,7 +342,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
         </div>
       ) : (
         <div className="bg-white/10 rounded-lg p-3 text-center">
-          <p className="text-gray-600 text-xs">
+          <p className="text-theme-muted text-xs">
             Configure daily goals and days to see progress
           </p>
         </div>

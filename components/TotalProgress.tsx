@@ -164,7 +164,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </div>
-        <h1 className="text-4xl font-bold text-gray-800">Total Progress</h1>
+        <h1 className="text-4xl font-bold text-theme-card">Total Progress</h1>
       </div>
 
       {/* View Mode Toggles */}
@@ -174,7 +174,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           className={`px-6 py-2 rounded-full font-semibold transition-all ${
             viewMode === 'day'
               ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Day
@@ -184,7 +184,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           className={`px-6 py-2 rounded-full font-semibold transition-all ${
             viewMode === 'week'
               ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Week
@@ -194,7 +194,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           className={`px-6 py-2 rounded-full font-semibold transition-all ${
             viewMode === 'month'
               ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Month
@@ -204,7 +204,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           className={`px-6 py-2 rounded-full font-semibold transition-all ${
             viewMode === 'total'
               ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white/20 text-gray-800 hover:bg-white/30'
+              : 'bg-white/20 text-theme-card hover:bg-white/30'
           }`}
         >
           Total
@@ -218,9 +218,9 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-xs font-semibold text-gray-600 uppercase">{viewData.label} Studied</span>
+            <span className="text-xs font-semibold text-theme-muted uppercase">{viewData.label} Studied</span>
           </div>
-          <div className="text-2xl font-bold text-gray-800">{formatTime(viewData.studied)}</div>
+          <div className="text-2xl font-bold text-theme-card">{formatTime(viewData.studied)}</div>
         </div>
 
         <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
@@ -228,9 +228,9 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <span className="text-xs font-semibold text-gray-600 uppercase">Goals</span>
+            <span className="text-xs font-semibold text-theme-muted uppercase">Goals</span>
           </div>
-          <div className="text-2xl font-bold text-gray-800">{goals.length}</div>
+          <div className="text-2xl font-bold text-theme-card">{goals.length}</div>
         </div>
 
         <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
@@ -238,27 +238,27 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            <span className="text-xs font-semibold text-gray-600 uppercase">Total Studied</span>
+            <span className="text-xs font-semibold text-theme-muted uppercase">Total Studied</span>
           </div>
-          <div className="text-2xl font-bold text-gray-800">{formatTime(totalStudied)}</div>
+          <div className="text-2xl font-bold text-theme-card">{formatTime(totalStudied)}</div>
         </div>
       </div>
 
       {/* Summary Stats */}
       <div className="mt-6 pt-6 border-t border-white/30 grid grid-cols-3 gap-4">
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{goals.length}</div>
-          <div className="text-xs text-gray-600 mt-1">Goals</div>
+          <div className="text-2xl font-bold text-theme-card">{goals.length}</div>
+          <div className="text-xs text-theme-muted mt-1">Goals</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">
+          <div className="text-2xl font-bold text-theme-card">
             {goals.reduce((sum, g) => sum + (g.subjects?.length || 0), 0)}
           </div>
-          <div className="text-xs text-gray-600 mt-1">Total Subjects</div>
+          <div className="text-xs text-theme-muted mt-1">Total Subjects</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-gray-800">{sessions.length}</div>
-          <div className="text-xs text-gray-600 mt-1">Total Sessions</div>
+          <div className="text-2xl font-bold text-theme-card">{sessions.length}</div>
+          <div className="text-xs text-theme-muted mt-1">Total Sessions</div>
         </div>
       </div>
     </div>

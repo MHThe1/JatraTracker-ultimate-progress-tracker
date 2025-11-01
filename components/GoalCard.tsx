@@ -54,15 +54,15 @@ export default function GoalCard({ goal, refreshTrigger }: GoalCardProps) {
                 e.stopPropagation();
                 setExpanded(!expanded);
               }}
-              className="text-gray-800 hover:text-gray-900"
+              className="text-theme-card hover:opacity-80"
             >
               {expanded ? '▼' : '▶'}
             </button>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold text-theme-card mb-2">
                 {goal.name}
               </h3>
-              <div className="flex items-center gap-4 text-gray-600 text-sm">
+              <div className="flex items-center gap-4 text-theme-muted text-sm">
                 <p>{formatTime(goal.totalStudyTime)} studied</p>
                 {goal.startDate && (
                   <span className="text-blue-600">
@@ -91,7 +91,7 @@ export default function GoalCard({ goal, refreshTrigger }: GoalCardProps) {
         {expanded && (
           <div className="mt-4 pl-10">
             {loading ? (
-              <div className="text-center py-4 text-gray-600">Loading...</div>
+              <div className="text-center py-4 text-theme-muted">Loading...</div>
             ) : goalDetails ? (
               <GoalProgress
                 goal={goalDetails}
@@ -99,7 +99,7 @@ export default function GoalCard({ goal, refreshTrigger }: GoalCardProps) {
                 refreshTrigger={refreshTrigger}
               />
             ) : (
-              <div className="text-center py-4 text-gray-600">Failed to load goal details</div>
+              <div className="text-center py-4 text-theme-muted">Failed to load goal details</div>
             )}
           </div>
         )}

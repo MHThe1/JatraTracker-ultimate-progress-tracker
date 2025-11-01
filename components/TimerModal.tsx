@@ -169,7 +169,7 @@ export default function TimerModal({
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-colors"
+            className="absolute top-4 right-4 text-theme-muted hover:text-theme-card transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -178,21 +178,21 @@ export default function TimerModal({
 
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">{subjectName}</h2>
+            <h2 className="text-3xl font-bold text-theme-card mb-2">{subjectName}</h2>
             {topicName && (
-              <p className="text-lg text-gray-600">{topicName}</p>
+              <p className="text-lg text-theme-muted">{topicName}</p>
             )}
           </div>
 
           {/* Timer Display */}
           <div className="text-center mb-8">
-            <div className="text-7xl font-bold text-gray-800 mb-4 font-mono animate-pulse">
+            <div className="text-7xl font-bold text-theme-card mb-4 font-mono animate-pulse">
               {formatTime(elapsedSeconds)}
             </div>
             
             {dailyGoal && (
               <div className="mb-4">
-                <div className="text-sm text-gray-600 mb-2">Daily Goal: {dailyGoal} minutes</div>
+                <div className="text-sm text-theme-muted mb-2">Daily Goal: {dailyGoal} minutes</div>
                 {remainingMinutes !== null && (
                   <div className={`text-lg font-semibold ${
                     remainingMinutes > 0 ? 'text-green-600' : 'text-red-600'
@@ -208,7 +208,7 @@ export default function TimerModal({
 
             {/* Progress bar */}
             {dailyGoal && (
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+              <div className="w-full bg-white/20 rounded-full h-3 mb-4">
                 <div
                   className={`h-3 rounded-full transition-all duration-500 ${
                     elapsedSeconds / 60 >= dailyGoal 
@@ -275,7 +275,7 @@ export default function TimerModal({
           </div>
 
           {isRunning && (
-            <p className="text-center text-sm text-gray-600 mt-4 animate-pulse">
+            <p className="text-center text-sm text-theme-muted mt-4 animate-pulse">
               ⏱️ Session in progress...
             </p>
           )}

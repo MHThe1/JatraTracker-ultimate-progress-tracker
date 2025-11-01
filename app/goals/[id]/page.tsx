@@ -9,6 +9,7 @@ import SubjectSettings from '@/components/SubjectSettings';
 import GoalProgress from '@/components/GoalProgress';
 import GoalSettings from '@/components/GoalSettings';
 import SubjectProgress from '@/components/SubjectProgress';
+import ThemeToggle from '@/components/ThemeToggle';
 
 interface GoalWithDetails extends Goal {
   subjects: Array<Subject & { topics: Topic[] }>;
@@ -124,10 +125,10 @@ export default function GoalDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-4">
+      <div className="min-h-screen bg-theme-gradient p-4">
         <main className="max-w-4xl mx-auto py-8">
           <div className="glass rounded-3xl p-12 text-center shadow-2xl">
-            <p className="text-gray-600">Loading goal...</p>
+            <p className="text-theme-card">Loading goal...</p>
           </div>
         </main>
       </div>
@@ -136,10 +137,10 @@ export default function GoalDetailPage() {
 
   if (!goal) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-4">
+      <div className="min-h-screen bg-theme-gradient p-4">
         <main className="max-w-4xl mx-auto py-8">
           <div className="glass rounded-3xl p-12 text-center shadow-2xl">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-theme-card mb-4">
               Goal not found
             </h2>
             <button
@@ -155,7 +156,7 @@ export default function GoalDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-4">
+    <div className="min-h-screen bg-theme-gradient p-4">
       <main className="max-w-4xl mx-auto py-8">
         <div className="mb-6 flex items-start justify-between">
           <button
@@ -164,14 +165,17 @@ export default function GoalDetailPage() {
           >
             ← Back to Goals
           </button>
-          <DateTimeDisplay />
+          <div className="flex items-center gap-4">
+            <DateTimeDisplay />
+            <ThemeToggle />
+          </div>
         </div>
 
         <GoalProgress goal={goal} subjects={goal.subjects} refreshTrigger={refreshTrigger} />
 
         <div className="glass rounded-3xl p-8 shadow-2xl mb-8 mt-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">Subjects</h2>
+            <h2 className="text-3xl font-bold text-theme-card">Subjects</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setGoalSettingsOpen(true)}
@@ -191,7 +195,7 @@ export default function GoalDetailPage() {
 
           {showAddSubject && (
             <div className="mb-6 p-6 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              <h3 className="text-xl font-semibold text-theme-card mb-4">
                 Add New Subject
               </h3>
               <div className="flex gap-4">
@@ -200,7 +204,7 @@ export default function GoalDetailPage() {
                   value={newSubjectName}
                   onChange={(e) => setNewSubjectName(e.target.value)}
                   placeholder="e.g., Mathematics"
-                  className="flex-1 px-4 py-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-500"
+                  className="flex-1 px-4 py-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card placeholder-theme-muted input-theme"
                   autoFocus
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddSubject();
@@ -222,7 +226,7 @@ export default function GoalDetailPage() {
                     setShowAddSubject(false);
                     setNewSubjectName('');
                   }}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-full transition-all"
+                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
                 >
                   Cancel
                 </button>
@@ -232,8 +236,8 @@ export default function GoalDetailPage() {
 
           {goal.subjects.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 mb-4">No subjects yet</p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-theme-muted mb-4">No subjects yet</p>
+              <p className="text-theme-muted text-sm">
                 Add your first subject to organize your study materials
               </p>
             </div>
@@ -249,15 +253,15 @@ export default function GoalDetailPage() {
                       <div className="flex items-center gap-4 flex-1">
                         <button
                           onClick={() => toggleSubject(subject.id)}
-                          className="text-gray-800 hover:text-gray-900"
+                          className="text-theme-card hover:opacity-80"
                         >
                           {expandedSubjects.has(subject.id) ? '▼' : '▶'}
                         </button>
                         <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-gray-800">
+                          <h3 className="text-xl font-semibold text-theme-card">
                             {subject.name}
                           </h3>
-                          <div className="flex items-center gap-4 text-gray-600 text-sm">
+                          <div className="flex items-center gap-4 text-theme-muted text-sm">
                             <p>{subject.studyTime} minutes studied</p>
                             {subject.dailyMinutesGoal && (
                               <span className="text-blue-600">
@@ -340,7 +344,7 @@ export default function GoalDetailPage() {
                                 value={newTopicName}
                                 onChange={(e) => setNewTopicName(e.target.value)}
                                 placeholder="Topic name"
-                                className="flex-1 px-3 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-800 placeholder-gray-500 text-sm"
+                                className="flex-1 px-3 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-theme-card placeholder-theme-muted text-sm input-theme"
                                 autoFocus
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter') handleAddTopic(subject.id);
@@ -362,7 +366,7 @@ export default function GoalDetailPage() {
                                   setAddingTopicTo(null);
                                   setNewTopicName('');
                                 }}
-                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-xl transition-all text-sm"
+                                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-2 px-4 rounded-xl transition-all text-sm"
                               >
                                 Cancel
                               </button>
@@ -371,7 +375,7 @@ export default function GoalDetailPage() {
                         )}
 
                         {subject.topics.length === 0 ? (
-                          <p className="text-gray-500 text-sm">No topics yet</p>
+                          <p className="text-theme-muted text-sm">No topics yet</p>
                         ) : (
                           <div className="space-y-2">
                             {subject.topics.map((topic) => (
@@ -388,8 +392,8 @@ export default function GoalDetailPage() {
                                   selectedTopic === topic.id ? 'ring-2 ring-purple-500' : ''
                                 }`}
                               >
-                                <p className="font-medium text-gray-800">{topic.name}</p>
-                                <p className="text-gray-600 text-xs mt-1">
+                                <p className="font-medium text-theme-card">{topic.name}</p>
+                                <p className="text-theme-muted text-xs mt-1">
                                   {topic.studyTime} minutes studied
                                 </p>
                               </button>

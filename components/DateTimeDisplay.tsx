@@ -34,10 +34,10 @@ export default function DateTimeDisplay() {
   return (
     <div className="glass rounded-2xl p-4 shadow-xl">
       <div className="text-center">
-        <div className="text-sm text-gray-600 mb-1">
+        <div className="text-sm text-theme-muted mb-1">
           {formatDate(currentDateTime)}
         </div>
-        <div className="text-2xl font-bold text-gray-800 font-mono">
+        <div className="text-2xl font-bold text-theme-card font-mono">
           {formatTime(currentDateTime)}
         </div>
       </div>
