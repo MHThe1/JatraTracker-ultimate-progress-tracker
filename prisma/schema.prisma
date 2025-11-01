@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Goal {
+  id             String        @id @default(uuid())
+  name           String
+  createdAt      String        // ISO string format
+  totalStudyTime Int           @default(0) // in minutes
+  startDate      String?       // YYYY-MM-DD format
+  finishDate     String?       // YYYY-MM-DD format
+  subjects       Subject[]
+  sessions       StudySession[]
+}
+
+model Subject {
+  id               String        @id @default(uuid())
+  name            String
+  goalId          String
+  goal            Goal          @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  studyTime       Int           @default(0) // in minutes
+  dailyMinutesGoal Int?         // Daily study goal in minutes
+  daysOfWeek      String?       // JSON array of days: ["monday", "tuesday", ...]
+  startDate       String?       // YYYY-MM-DD format
+  finishDate      String?       // YYYY-MM-DD format
+  topics          Topic[]
+  sessions        StudySession[]
+}
+
+model Topic {
+  id         String        @id @default(uuid())
+  name       String
+  subjectId  String
+  subject    Subject       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  studyTime  Int           @default(0) // in minutes
+  sessions   StudySession[]
+}
+
+model StudySession {
+  id         String   @id @default(uuid())
+  goalId     String
+  goal       Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  subjectId  String?
+  subject    Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topicId    String?
+  topic      Topic?   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  startTime  String   // ISO string format
+  endTime    String?  // ISO string format
+  duration   Int      @default(0) // in minutes
+  date       String   // YYYY-MM-DD format
+}
