@@ -6,7 +6,15 @@ import { getTodayDateString } from '@/lib/dateUtils';
 
 interface CalendarViewProps {
   sessions: StudySession[];
-  subjects: Array<{ id: string; name: string; topics: Array<{ id: string; name: string }> }>;
+  subjects: Array<{ 
+    id: string; 
+    name: string; 
+    topics: Array<{ id: string; name: string }>;
+    dailyMinutesGoal?: number;
+    daysOfWeek?: string[];
+    startDate?: string;
+    finishDate?: string;
+  }>;
   currentMonth: Date;
   setCurrentMonth: (date: Date) => void;
   selectedDate: string | null;
@@ -101,10 +109,45 @@ export default function CalendarView({
     return getSessionsForDate(date).reduce((sum, s) => sum + s.duration, 0);
   };
 
-  // Calculate progress for a date (max 120 minutes = 100%)
+  // Calculate daily goal for a specific date based on subjects scheduled for that day
+  const getDailyGoalForDate = (date: string) => {
+    const dateObj = new Date(date);
+    const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dateObj.getDay()];
+    
+    return subjects.reduce((sum, subject) => {
+      // Check if subject has daily goal and is scheduled for this day
+      if (subject.dailyMinutesGoal && subject.daysOfWeek && subject.daysOfWeek.length > 0) {
+        // Normalize day names for comparison
+        const normalizedDays = subject.daysOfWeek.map(d => 
+          d.charAt(0).toUpperCase() + d.slice(1).toLowerCase()
+        );
+        
+        if (normalizedDays.includes(dayName)) {
+          // Check subject date range if set
+          let isWithinRange = true;
+          if (subject.startDate && date < subject.startDate) isWithinRange = false;
+          if (subject.finishDate && date > subject.finishDate) isWithinRange = false;
+          
+          if (isWithinRange) {
+            return sum + subject.dailyMinutesGoal;
+          }
+        }
+      }
+      return sum;
+    }, 0);
+  };
+
+  // Calculate progress for a date based on daily goal
   const getProgressForDate = (date: string) => {
     const total = getTotalMinutesForDate(date);
-    return Math.min((total / 120) * 100, 100);
+    const dailyGoal = getDailyGoalForDate(date);
+    
+    if (dailyGoal === 0) {
+      // If no goal is set for this day, don't show progress or show 0%
+      return 0;
+    }
+    
+    return Math.min((total / dailyGoal) * 100, 100);
   };
 
   const calendarDays = getCalendarDays();

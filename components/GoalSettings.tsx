@@ -37,7 +37,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
     <>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-in fade-in duration-300" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-w-lg w-full animate-in zoom-in-95 duration-300 border border-white/30">
+        <div className="glass relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-w-lg w-full animate-in zoom-in-95 duration-300 border border-white/30">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-theme-muted hover:text-theme-card transition-colors"
@@ -58,7 +58,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme"
+              className="w-full max-w-full min-w-0 px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme box-border"
             />
           </div>
 
@@ -71,7 +71,7 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
               type="date"
               value={finishDate}
               onChange={(e) => setFinishDate(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme"
+              className="w-full max-w-full min-w-0 px-4 py-2 rounded-xl border border-white/30 bg-white/20 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-theme-card input-theme box-border"
             />
           </div>
 

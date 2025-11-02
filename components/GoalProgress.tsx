@@ -8,10 +8,18 @@ interface GoalProgressProps {
   goal: Goal;
   subjects: Array<Subject & { topics: Array<{ id: string; name: string; studyTime: number }> }>;
   refreshTrigger?: number; // Trigger refresh when this changes
+  onSettingsClick?: () => void;
+  onViewModeChange?: (viewMode: 'day' | 'week' | 'month' | 'total') => void;
 }
 
-export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalProgressProps) {
+export default function GoalProgress({ goal, subjects, refreshTrigger, onSettingsClick, onViewModeChange }: GoalProgressProps) {
   const [viewMode, setViewMode] = useState<'day' | 'week' | 'month' | 'total'>('day');
+  
+  useEffect(() => {
+    if (onViewModeChange) {
+      onViewModeChange(viewMode);
+    }
+  }, [viewMode, onViewModeChange]);
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -294,10 +302,19 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
   };
 
   return (
-    <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl">
+    <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl relative">
       {/* Header with title and dates */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex-1">
+          {onSettingsClick && (
+            <button
+              onClick={onSettingsClick}
+              className="absolute top-4 right-4 hover:bg-gray-700 text-white font-semibold py-2 px-2 rounded-full transition-all"
+              title="Goal Settings"
+            >
+              ⚙️
+            </button>
+          )}
           <div className="flex items-center gap-2 sm:gap-3 mb-3">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
               <svg className="w-5 h-5 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -345,7 +362,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span className="hidden sm:inline">Day</span>
+            <span className="text-xs sm:text-base">Day</span>
           </div>
         </button>
         <button
@@ -360,7 +377,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span className="hidden sm:inline">Week</span>
+            <span className="text-xs sm:text-base">Week</span>
           </div>
         </button>
         <button
@@ -375,7 +392,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span className="hidden sm:inline">Month</span>
+            <span className="text-xs sm:text-base">Month</span>
           </div>
         </button>
         <button
@@ -390,7 +407,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
             <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <span className="hidden sm:inline">Total</span>
+            <span className="text-xs sm:text-base">Total</span>
           </div>
         </button>
       </div>
