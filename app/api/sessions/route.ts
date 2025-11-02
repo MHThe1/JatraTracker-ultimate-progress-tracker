@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import type { StudySession } from '@/types';
 
-// POST /api/sessions - Start or stop a study session
+// POST /api/sessions - Start, stop, or add a study session
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { goalId, subjectId, topicId, action } = body; // action: 'start' or 'stop'
+    const { goalId, subjectId, topicId, action, duration, date, comment } = body; // action: 'start', 'stop', or 'add'
 
-    if (!action || (action !== 'start' && action !== 'stop')) {
+    if (!action || (action !== 'start' && action !== 'stop' && action !== 'add')) {
       return NextResponse.json(
-        { error: "Action must be 'start' or 'stop'" },
+        { error: "Action must be 'start', 'stop', or 'add'" },
         { status: 400 }
       );
     }
@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
         endTime: undefined,
         duration: session.duration,
         date: session.date,
+        comment: session.comment || undefined,
       };
 
       return NextResponse.json(transformedSession, { status: 201 });
@@ -140,9 +141,95 @@ export async function POST(request: NextRequest) {
         endTime: updatedSession.endTime || undefined,
         duration: updatedSession.duration,
         date: updatedSession.date,
+        comment: updatedSession.comment || undefined,
       };
 
       return NextResponse.json(transformedSession);
+    } else if (action === 'add') {
+      // Add a custom session manually
+      if (!goalId) {
+        return NextResponse.json(
+          { error: 'Goal ID is required' },
+          { status: 400 }
+        );
+      }
+
+      if (!subjectId) {
+        return NextResponse.json(
+          { error: 'Subject ID is required' },
+          { status: 400 }
+        );
+      }
+
+      if (!duration || duration <= 0) {
+        return NextResponse.json(
+          { error: 'Valid duration in minutes is required' },
+          { status: 400 }
+        );
+      }
+
+      // Use provided date or default to today
+      const sessionDate = date || new Date().toISOString().split('T')[0];
+      // Create a timestamp at noon UTC on the specified date to avoid timezone issues
+      const [year, month, day] = sessionDate.split('-').map(Number);
+      const sessionStartTime = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)).toISOString();
+
+      const newSession = await prisma.studySession.create({
+        data: {
+          goalId,
+          subjectId,
+          topicId: topicId || null,
+          startTime: sessionStartTime,
+          endTime: sessionStartTime,
+          duration,
+          date: sessionDate,
+          comment: comment || null,
+        },
+      });
+
+      // Update study time for goal, subject, and topic
+      await prisma.goal.update({
+        where: { id: goalId },
+        data: {
+          totalStudyTime: {
+            increment: duration,
+          },
+        },
+      });
+
+      await prisma.subject.update({
+        where: { id: subjectId },
+        data: {
+          studyTime: {
+            increment: duration,
+          },
+        },
+      });
+
+      if (topicId) {
+        await prisma.topic.update({
+          where: { id: topicId },
+          data: {
+            studyTime: {
+              increment: duration,
+            },
+          },
+        });
+      }
+
+      const transformedSession: StudySession = {
+        id: newSession.id,
+        goalId: newSession.goalId,
+        subjectId: newSession.subjectId || undefined,
+        topicId: newSession.topicId || undefined,
+        startTime: newSession.startTime,
+        endTime: newSession.endTime || undefined,
+        duration: newSession.duration,
+        date: newSession.date,
+        comment: newSession.comment || undefined,
+      };
+
+      return NextResponse.json(transformedSession, { status: 201 });
     }
   } catch (error) {
     console.error('Error handling session:', error);
@@ -193,6 +280,7 @@ export async function GET(request: NextRequest) {
       endTime: session.endTime || undefined,
       duration: session.duration,
       date: session.date,
+      comment: session.comment || undefined,
     }));
 
     return NextResponse.json(transformedSessions);

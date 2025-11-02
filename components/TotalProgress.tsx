@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Goal, StudySession } from '@/types';
+import { getTodayDateString } from '@/lib/dateUtils';
 
 interface GoalWithSubjects extends Goal {
   subjects?: Array<{
@@ -53,7 +54,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
 
   // Calculate today's study time across all goals
   const getTodayStudyTime = () => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getTodayDateString();
     return sessions
       .filter(s => s.date === today && s.endTime)
       .reduce((sum, s) => sum + s.duration, 0);

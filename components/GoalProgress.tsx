@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Goal, Subject, StudySession } from '@/types';
+import { getTodayDateString } from '@/lib/dateUtils';
 
 interface GoalProgressProps {
   goal: Goal;
@@ -57,7 +58,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger }: GoalPro
 
   // Calculate today's study time
   const getTodayStudyTime = () => {
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const today = getTodayDateString(); // YYYY-MM-DD
     return sessions
       .filter(s => s.date === today && s.endTime) // Only completed sessions
       .reduce((sum, s) => sum + s.duration, 0);

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Subject, StudySession } from '@/types';
+import { getTodayDateString } from '@/lib/dateUtils';
 
 interface SubjectProgressProps {
   subject: Subject & { topics: Array<{ id: string; name: string; studyTime: number }> };
@@ -52,7 +53,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
     if (normalizedDays.includes(today)) {
       // Check subject date range
       if (subject.startDate || subject.finishDate) {
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getTodayDateString();
         if (subject.startDate && todayStr < subject.startDate) return 0;
         if (subject.finishDate && todayStr > subject.finishDate) return 0;
       }
@@ -63,7 +64,7 @@ export default function SubjectProgress({ subject, goalId, refreshTrigger }: Sub
 
   // Calculate today's study time
   const getTodayStudyTime = () => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getTodayDateString();
     return sessions
       .filter(s => s.date === today && s.endTime && s.subjectId === subject.id)
       .reduce((sum, s) => sum + s.duration, 0);

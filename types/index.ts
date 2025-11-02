@@ -25,6 +25,7 @@ export interface StudySession {
   endTime?: string;
   duration: number; // in minutes
   date: string; // YYYY-MM-DD format
+  comment?: string; // Optional comment for the session
 }
 
 export interface Goal {

@@ -56,4 +56,5 @@ model StudySession {
   endTime    String?  // ISO string format
   duration   Int      @default(0) // in minutes
   date       String   // YYYY-MM-DD format
+  comment    String?  // Optional comment for the session
 }

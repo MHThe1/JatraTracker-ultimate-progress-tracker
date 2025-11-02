@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import type { Goal, Subject, Topic } from '@/types';
+import type { Goal, Subject, Topic, StudySession } from '@/types';
 import TimerModal from '@/components/TimerModal';
+import AddSessionModal from '@/components/AddSessionModal';
+import SessionsModal from '@/components/SessionsModal';
 import DateTimeDisplay from '@/components/DateTimeDisplay';
 import SubjectSettings from '@/components/SubjectSettings';
 import GoalProgress from '@/components/GoalProgress';
 import GoalSettings from '@/components/GoalSettings';
 import SubjectProgress from '@/components/SubjectProgress';
 import ThemeToggle from '@/components/ThemeToggle';
+import CalendarView from '@/components/CalendarView';
 
 interface GoalWithDetails extends Goal {
   subjects: Array<Subject & { topics: Topic[] }>;
@@ -32,16 +35,39 @@ export default function GoalDetailPage() {
   const [timerModalOpen, setTimerModalOpen] = useState(false);
   const [currentSubjectForTimer, setCurrentSubjectForTimer] = useState<Subject | null>(null);
   const [currentTopicForTimer, setCurrentTopicForTimer] = useState<Topic | null>(null);
+  const [addSessionModalOpen, setAddSessionModalOpen] = useState(false);
+  const [currentSubjectForAddSession, setCurrentSubjectForAddSession] = useState<Subject | null>(null);
+  const [currentTopicForAddSession, setCurrentTopicForAddSession] = useState<Topic | null>(null);
+  const [sessionsModalOpen, setSessionsModalOpen] = useState(false);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [currentSubjectForSettings, setCurrentSubjectForSettings] = useState<Subject | null>(null);
   const [goalSettingsOpen, setGoalSettingsOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  
+  // Calendar and sessions state
+  const [sessions, setSessions] = useState<StudySession[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [filteredSubjectId, setFilteredSubjectId] = useState<string | null>(null);
 
   useEffect(() => {
     if (goalId) {
       fetchGoal();
+      fetchSessions();
     }
-  }, [goalId]);
+  }, [goalId, refreshTrigger]);
+  
+  const fetchSessions = async () => {
+    try {
+      const response = await fetch(`/api/sessions?goalId=${goalId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setSessions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
+    }
+  };
 
   const fetchGoal = async () => {
     try {
@@ -50,6 +76,7 @@ export default function GoalDetailPage() {
       if (!response.ok) throw new Error('Failed to fetch goal');
       const data = await response.json();
       setGoal(data);
+      return data;
     } catch (error) {
       console.error('Error fetching goal:', error);
     } finally {
@@ -157,26 +184,35 @@ export default function GoalDetailPage() {
 
   return (
     <div className="min-h-screen bg-theme-gradient p-4">
-      <main className="max-w-4xl mx-auto py-8">
-        <div className="mb-6 flex items-start justify-between flex-col sm:flex-row gap-4">
+      <main className="max-w-[1750px] mx-auto py-8">
+        <div className="mb-6 flex items-start justify-between gap-4">
           <button
             onClick={() => router.push('/')}
             className="text-white/90 hover:text-white flex items-center gap-2 text-sm sm:text-base"
           >
             ← Back to Goals
           </button>
-          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
-            <DateTimeDisplay />
-            <ThemeToggle />
-          </div>
         </div>
 
-        <GoalProgress goal={goal} subjects={goal.subjects} refreshTrigger={refreshTrigger} />
-
-        <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl mb-8 mt-8">
-          <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
+        {/* Two-column layout */}
+        <div className="flex flex-col lg:flex-row gap-6 mt-8">
+          {/* Left column - Goal Progress and Subjects */}
+          <div className="w-full lg:w-[60%]">
+            <div className="mb-6">
+              <GoalProgress goal={goal} subjects={goal.subjects} refreshTrigger={refreshTrigger} />
+            </div>
+            
+            <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl mb-8">
+            <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-theme-card">Subjects</h2>
             <div className="flex gap-2 flex-wrap">
+              <button
+                onClick={() => setAddSessionModalOpen(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-full transition-all text-xs sm:text-sm"
+                title="Add Custom Session"
+              >
+                📝 <span className="hidden sm:inline">Add</span> Session
+              </button>
               <button
                 onClick={() => setGoalSettingsOpen(true)}
                 className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-full transition-all text-xs sm:text-sm"
@@ -317,7 +353,7 @@ export default function GoalDetailPage() {
                           refreshTrigger={refreshTrigger}
                         />
 
-                        <div className="mb-4">
+                        <div className="mb-4 space-y-2">
                           <button
                             onClick={() => {
                               setCurrentSubjectForTimer(subject);
@@ -336,6 +372,32 @@ export default function GoalDetailPage() {
                                 {subject.topics.find((t) => t.id === selectedTopic)?.name}
                               </span>
                             )}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setCurrentSubjectForAddSession(subject);
+                              const topic = subject.topics.find((t) => t.id === selectedTopic);
+                              setCurrentTopicForAddSession(topic || null);
+                              setAddSessionModalOpen(true);
+                            }}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                            </svg>
+                            Add Session
+                          </button>
+                          <button
+                            onClick={() => {
+                              setFilteredSubjectId(subject.id);
+                              setSelectedDate(null);
+                            }}
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg"
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                            </svg>
+                            View Sessions
                           </button>
                         </div>
                         {addingTopicTo === subject.id && (
@@ -412,6 +474,61 @@ export default function GoalDetailPage() {
             </div>
           )}
         </div>
+            </div>
+          {/* Right column - Calendar */}
+          <div className="w-full lg:w-[40%]">
+            <div className="sticky top-8 space-y-4">
+              {/* Desktop: DateTime and Theme Toggle */}
+              <div className="hidden lg:block">
+                <div className="">
+                  <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
+                    <DateTimeDisplay />
+                    <ThemeToggle />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Filter info and clear button */}
+              {filteredSubjectId && (
+                <div className="glass rounded-2xl p-4 shadow-xl border border-white/20">
+                  <div className="flex items-center justify-between">
+                    <span className="text-theme-card font-medium">
+                      Filtering: {goal.subjects.find(s => s.id === filteredSubjectId)?.name || 'Unknown Subject'}
+                    </span>
+                    <button
+                      onClick={() => setFilteredSubjectId(null)}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition-all text-sm flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Clear Filter
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+              <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl">
+                {/* Mobile: DateTime and Theme Toggle */}
+                <div className="lg:hidden flex items-center justify-between mb-6 pb-6 border-b border-white/20">
+                  <DateTimeDisplay />
+                  <ThemeToggle />
+                </div>
+                
+                <CalendarView
+                  sessions={filteredSubjectId ? sessions.filter(s => s.subjectId === filteredSubjectId) : sessions}
+                  subjects={goal.subjects}
+                  currentMonth={currentMonth}
+                  setCurrentMonth={setCurrentMonth}
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                  onSessionEdit={() => {}} // Handled by SessionsModal
+                  onSessionDelete={() => {}} // Handled by SessionsModal
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Timer Modal */}
@@ -478,6 +595,36 @@ export default function GoalDetailPage() {
           }}
           onClose={() => {
             setGoalSettingsOpen(false);
+          }}
+        />
+      )}
+
+      {/* Add Session Modal */}
+      {goal && (
+        <AddSessionModal
+          isOpen={addSessionModalOpen}
+          onClose={() => setAddSessionModalOpen(false)}
+          goalId={goalId}
+          subjects={goal.subjects}
+          preselectedSubjectId={currentSubjectForAddSession?.id}
+          preselectedTopicId={currentTopicForAddSession?.id}
+          onSessionAdded={async () => {
+            await fetchGoal();
+            setRefreshTrigger((prev) => prev + 1);
+          }}
+        />
+      )}
+
+      {/* Sessions Modal */}
+      {goal && (
+        <SessionsModal
+          isOpen={sessionsModalOpen}
+          onClose={() => setSessionsModalOpen(false)}
+          goalId={goalId}
+          subjects={goal.subjects}
+          onSessionsChange={async () => {
+            await fetchGoal();
+            setRefreshTrigger((prev) => prev + 1);
           }}
         />
       )}
