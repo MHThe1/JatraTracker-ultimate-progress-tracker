@@ -158,7 +158,46 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
   const totalStudied = goals.reduce((sum, g) => sum + g.totalStudyTime, 0);
 
   return (
-    <div className="glass rounded-3xl p-4 sm:p-8 shadow-2xl mb-8">
+    <div className="relative glass rounded-3xl p-4 sm:p-8 shadow-2xl mb-8 overflow-hidden">
+      {/* Progress bar background - glass filled with water effect */}
+      {progressPercentage > 0 && (
+        <div className="absolute inset-0 overflow-hidden flex flex-col-reverse">
+          <div
+            className="relative w-full bg-gradient-to-t from-white/20 via-white/15 to-white/10 transition-all duration-300"
+            style={{ 
+              height: `${progressPercentage}%`,
+            }}
+          >
+            {/* Curved water surface at top using SVG */}
+            <div className="absolute -top-1 left-0 right-0 w-full h-3 overflow-visible">
+              <svg
+                className="w-full h-full"
+                viewBox="0 0 1000 100"
+                preserveAspectRatio="none"
+              >
+                <defs>
+                  <linearGradient id="totalProgressWaveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: "rgba(255, 255, 255, 0.3)", stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: "rgba(255, 255, 255, 0.1)", stopOpacity: 0 }} />
+                  </linearGradient>
+                </defs>
+                {/* Smooth wave curve - creates the characteristic water surface */}
+                <path
+                  d="M 0,25 Q 125,5 250,25 Q 375,45 500,25 Q 625,5 750,25 Q 875,45 1000,25 L 1000,100 L 0,100 Z"
+                  fill="url(#totalProgressWaveGradient)"
+                />
+              </svg>
+            </div>
+            {/* Depth shading at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-white/15 to-transparent"></div>
+            {/* Glossy highlight shine */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent"></div>
+          </div>
+        </div>
+      )}
+      
+      {/* Content above progress bar */}
+      <div className="relative z-10">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
           <svg className="w-5 h-5 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,6 +300,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           <div className="text-xl sm:text-2xl font-bold text-theme-card">{sessions.length}</div>
           <div className="text-[10px] sm:text-xs text-theme-muted mt-1">Total Sessions</div>
         </div>
+      </div>
       </div>
     </div>
   );
