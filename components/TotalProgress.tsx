@@ -133,9 +133,51 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
           label: 'This Month',
         };
       case 'total':
+        // For total view, calculate total goal from all subjects' scheduled time across all goals
+        let totalGoalMinutes = 0;
+        goals.forEach(goal => {
+          if (goal.subjects && goal.subjects.length > 0) {
+            if (goal.startDate && goal.finishDate) {
+              // Calculate based on goal date range
+              const [startYear, startMonth, startDay] = goal.startDate.split('-').map(Number);
+              const [finishYear, finishMonth, finishDay] = goal.finishDate.split('-').map(Number);
+              const start = new Date(startYear, startMonth - 1, startDay);
+              const finish = new Date(finishYear, finishMonth - 1, finishDay);
+              const currentDate = new Date(start);
+              
+              while (currentDate <= finish) {
+                const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][currentDate.getDay()];
+                goal.subjects.forEach(subject => {
+                  if (subject.dailyMinutesGoal && subject.daysOfWeek && subject.daysOfWeek.length > 0) {
+                    const normalizedDays = subject.daysOfWeek.map(d => 
+                      d.charAt(0).toUpperCase() + d.slice(1).toLowerCase()
+                    );
+                    if (normalizedDays.includes(dayName)) {
+                      const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                      let isWithinRange = true;
+                      if (subject.startDate && dateStr < subject.startDate) isWithinRange = false;
+                      if (subject.finishDate && dateStr > subject.finishDate) isWithinRange = false;
+                      if (isWithinRange) {
+                        totalGoalMinutes += subject.dailyMinutesGoal;
+                      }
+                    }
+                  }
+                });
+                currentDate.setDate(currentDate.getDate() + 1);
+              }
+            } else {
+              // Estimate: weekly goal * 12 weeks if no date range
+              goal.subjects.forEach(subject => {
+                if (subject.dailyMinutesGoal && subject.daysOfWeek && subject.daysOfWeek.length > 0) {
+                  totalGoalMinutes += subject.dailyMinutesGoal * subject.daysOfWeek.length * 12;
+                }
+              });
+            }
+          }
+        });
         return {
-          goal: goals.reduce((sum, g) => sum + g.totalStudyTime, 0), // Total goal would be sum of all goal targets
-          studied: goals.reduce((sum, g) => sum + g.totalStudyTime, 0), // Total studied across all goals
+          goal: totalGoalMinutes,
+          studied: goals.reduce((sum, g) => sum + g.totalStudyTime, 0),
           label: 'Total',
         };
     }
@@ -258,7 +300,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">{viewData.label} Studied</span>
+            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">{viewData.label}</span>
           </div>
           <div className="text-lg sm:text-2xl font-bold text-theme-card">{formatTime(viewData.studied)}</div>
         </div>
@@ -278,7 +320,7 @@ export default function TotalProgress({ goals, refreshTrigger }: TotalProgressPr
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">Total Studied</span>
+            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">Total Worked</span>
           </div>
           <div className="text-lg sm:text-2xl font-bold text-theme-card">{formatTime(totalStudied)}</div>
         </div>

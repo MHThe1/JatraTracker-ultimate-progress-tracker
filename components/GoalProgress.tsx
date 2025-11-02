@@ -420,7 +420,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger, onSetting
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">{viewData.label} Studied</span>
+            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">{viewData.label}</span>
           </div>
           <div className="text-lg sm:text-2xl font-bold text-theme-card">{formatTime(viewData.studied)}</div>
         </div>
@@ -431,7 +431,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger, onSetting
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">{viewData.label} Goal</span>
+            <span className="text-[10px] sm:text-xs font-semibold text-theme-muted uppercase">Goal {viewData.label}</span>
           </div>
           <div className="text-lg sm:text-2xl font-bold text-theme-card">
             {viewData.goal > 0 ? formatTime(viewData.goal) : '—'}
@@ -455,7 +455,7 @@ export default function GoalProgress({ goal, subjects, refreshTrigger, onSetting
         {viewData.goal > 0 ? (
           <div>
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-semibold text-theme-card">{viewData.label} Progress</span>
+              <span className="text-sm font-semibold text-theme-card">Progress {viewData.label}</span>
               <span className="text-sm text-theme-muted">
                 {formatTime(viewData.studied)} / {formatTime(viewData.goal)}
                 {viewMode === 'day' && (

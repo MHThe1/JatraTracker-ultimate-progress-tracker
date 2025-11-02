@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motivationalQuotes } from '@/lib/motivationalQuotes';
 
 export default function AppHeader() {
+  const router = useRouter();
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -21,9 +23,12 @@ export default function AppHeader() {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl sm:text-xl md:text-2xl font-bold text-white mb-1">
+      <button
+        onClick={() => router.push('/')}
+        className="text-xl sm:text-xl md:text-2xl font-bold text-white mb-1 hover:opacity-80 transition-opacity duration-200 cursor-pointer"
+      >
         JatraTracker
-      </h1>
+      </button>
       <div className="h-5 sm:h-6 flex items-center overflow-hidden">
         <p
           className={`text-sm sm:text-xs text-white/80 transition-all duration-500 ease-in-out ${
