@@ -9,13 +9,16 @@ interface GoalSettingsProps {
     startDate?: string;
     finishDate?: string;
   }) => Promise<void>;
+  onDelete?: () => Promise<void>;
   onClose: () => void;
 }
 
-export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProps) {
+export default function GoalSettings({ goal, onSave, onDelete, onClose }: GoalSettingsProps) {
   const [startDate, setStartDate] = useState(goal.startDate || '');
   const [finishDate, setFinishDate] = useState(goal.finishDate || '');
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -30,6 +33,22 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
       alert('Failed to save settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!onDelete) return;
+    
+    try {
+      setDeleting(true);
+      await onDelete();
+      onClose();
+    } catch (error) {
+      console.error('Error deleting goal:', error);
+      alert('Failed to delete goal');
+    } finally {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -76,20 +95,57 @@ export default function GoalSettings({ goal, onSave, onClose }: GoalSettingsProp
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
-            >
-              {saving ? 'Saving...' : 'Save Settings'}
-            </button>
-            <button
-              onClick={onClose}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
-            >
-              Cancel
-            </button>
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-4">
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-full transition-all"
+              >
+                {saving ? 'Saving...' : 'Save Settings'}
+              </button>
+              <button
+                onClick={onClose}
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-3 px-6 rounded-full transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+            
+            {onDelete && (
+              <>
+                {!showDeleteConfirm ? (
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-full transition-all"
+                  >
+                    Delete Goal
+                  </button>
+                ) : (
+                  <div className="flex flex-col gap-3 p-4 bg-red-500/20 border border-red-500/50 rounded-xl">
+                    <p className="text-theme-card text-sm font-semibold text-center">
+                      Are you sure you want to delete this goal? This action cannot be undone.
+                    </p>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={handleDelete}
+                        disabled={deleting}
+                        className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed text-white font-semibold py-2 px-4 rounded-full transition-all"
+                      >
+                        {deleting ? 'Deleting...' : 'Yes, Delete'}
+                      </button>
+                      <button
+                        onClick={() => setShowDeleteConfirm(false)}
+                        disabled={deleting}
+                        className="flex-1 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 text-theme-card font-semibold py-2 px-4 rounded-full transition-all disabled:opacity-50"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

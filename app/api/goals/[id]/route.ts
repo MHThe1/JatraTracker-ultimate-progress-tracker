@@ -112,3 +112,37 @@ export async function PATCH(
     );
   }
 }
+
+// DELETE /api/goals/[id] - Delete a goal
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const goal = await prisma.goal.findUnique({
+      where: { id },
+    });
+
+    if (!goal) {
+      return NextResponse.json(
+        { error: 'Goal not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the goal (cascade will delete subjects, topics, and sessions)
+    await prisma.goal.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting goal:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete goal' },
+      { status: 500 }
+    );
+  }
+}

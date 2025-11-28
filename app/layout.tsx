@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JatraTrack - Track Your Journey",
+  title: "JatraTracker - Track Your Journey",
   description: "Track your journey, build your routine. Manage goals, subjects, and daily activities with progress tracking.",
 };
 

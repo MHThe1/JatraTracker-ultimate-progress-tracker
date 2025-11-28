@@ -804,6 +804,16 @@ export default function GoalDetailPage() {
             if (!response.ok) throw new Error('Failed to save settings');
             await fetchGoal();
           }}
+          onDelete={async () => {
+            const response = await fetch(`/api/goals/${goal.id}`, {
+              method: 'DELETE',
+            });
+
+            if (!response.ok) throw new Error('Failed to delete goal');
+            
+            // Navigate back to home page after deletion
+            router.push('/');
+          }}
           onClose={() => {
             setGoalSettingsOpen(false);
           }}
